@@ -1,0 +1,4 @@
+pp_prepare -keep_wcs *a.fits
+pp_photometry *a.fits
+pp_calibrate *a.fits
+pp_distill *a.fits

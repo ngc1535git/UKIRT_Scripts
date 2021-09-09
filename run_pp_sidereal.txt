@@ -1,0 +1,14 @@
+for TARGETFOLDER in *Sidereal;
+do cd $TARGETFOLDER;
+echo "--->---> Processing" $TARGETFOLDER;
+for FILTERFOLDER in *;
+do cd $FILTERFOLDER;
+echo "--->--->---> Processing" $TARGETFOLDER $FILTERFOLDER;
+pp_prepare -keep_wcs *a.fits;
+pp_photometry *a.fits;
+pp_calibrate *a.fits;
+pp_distill *a.fits;
+cd ..;
+done;
+cd ..;
+done;

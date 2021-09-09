@@ -1,0 +1,73 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Step Zero: cd into date folder
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Step One: pre process images
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+for TARGETFOLDER in *Sidereal;
+do cd $TARGETFOLDER;
+echo "--->---> Processing" $TARGETFOLDER;
+for FILTERFOLDER in *;
+do cd $FILTERFOLDER;
+echo "--->--->---> Processing" $TARGETFOLDER $FILTERFOLDER;
+pp_prepare -keep_wcs *a.fits;
+pp_photometry *a.fits;
+pp_calibrate *a.fits;
+pp_distill *a.fits;
+cd ..;
+done;
+cd ..;
+done;
+
+for TARGETFOLDER in !(*Sidereal);
+do cd $TARGETFOLDER;
+echo "--->---> Processing" $TARGETFOLDER;
+for FILTERFOLDER in *;
+do cd $FILTERFOLDER;
+echo "--->--->---> Processing" $TARGETFOLDER $FILTERFOLDER;
+pp_prepare -keep_wcs *r.fits;
+pp_photometry -snr 3 -minarea 12 -aprad 6 *r.fits;
+pp_calibrate -instrumental *r.fits;
+cd ..;
+done;
+cd ..;
+done;
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Step Two: click on targets
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+for TARGETFOLDER in !(*Sidereal);
+do cd $TARGETFOLDER;
+echo "--->---> Processing" $TARGETFOLDER;
+for FILTERFOLDER in *;
+do cd $FILTERFOLDER;
+echo "--->--->---> Processing" $TARGETFOLDER $FILTERFOLDER;
+pp_manident *r.fits;
+cd ..;
+done;
+cd ..;
+done;
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Step Three: post process images
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+for TARGETFOLDER in !(*Sidereal);
+do cd $TARGETFOLDER;
+echo "--->---> Processing" $TARGETFOLDER;
+for FILTERFOLDER in *;
+do cd $FILTERFOLDER;
+echo "--->--->---> Processing" $TARGETFOLDER $FILTERFOLDER;
+pp_distill -positions positions.dat *r.fits;
+cd ..;
+done;
+cd ..;
+done;
+
+

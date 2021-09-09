@@ -1,0 +1,5 @@
+pp_prepare -keep_wcs *r.fits
+pp_photometry -snr 3 -minarea 12 -aprad 6 *r.fits
+pp_calibrate -instrumental *r.fits
+pp_manident *r.fits
+pp_distill -positions positions.dat *r.fits
